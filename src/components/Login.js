@@ -1,29 +1,40 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 
 class LogIn extends Component {
   state = {
     user: {
       userName: '',
       password: ''
-    }
+    },
+    redirect: false
   }
 
-  handleSubmit = () => {
-
+  handleSubmit = (event) => {
+    event.preventDefault()
+    this.props.mockLogIn(this.state.user)
+    this.setState({ redirect: true })
   }
 
-  handleChange = () => {
+  handleChange = (event) => {
+    const updatedUser = { ...this.state.user }
+    const inputField = event.target.name
+    const inputValue = event.target.value
+    updatedUser[inputField] = inputValue
 
+    this.setState({ user: updatedUser })
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/userProfile" />
+    }
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
           <div>
             <label htmlFor="userName">User Name</label>
-            <input
-              type="text" name="userName" onChange={this.handleChange} value={this.state.user.userName} />
+            <input type="text" name="userName" onChange={this.handleChange} value={this.state.user.userName} />
           </div>
           <div>
             <label htmlFor="password">Password</label>
