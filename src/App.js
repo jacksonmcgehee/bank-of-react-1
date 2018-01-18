@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './components/Home'
 import UserProfile from './components/UserProfile'
+import LogIn from './components/Login'
 
 class App extends Component {
   state = {
@@ -12,7 +13,15 @@ class App extends Component {
     }
   }
 
+  mockLogIn = (logInInfo) => {
+    const newUser = { ...this.state.currentUser }
+    newUser.userName = logInInfo.userName
+    this.setState({ currentUser: newUser })
+  }
+
   render() {
+    console.log(Date.now())
+
     const HomeComponent = () => (
       <Home
         accountBalance={this.state.accountBalance} />
@@ -24,12 +33,19 @@ class App extends Component {
         memberSince={this.state.currentUser.memberSince} />
     )
 
+    const LogInComponent = () => (
+      <LogIn
+        user={this.state.currentUser}
+        mockLogIn={this.mockLogIn}
+        {...this.props} />
+    )
 
     return (
       <Router>
         <Switch>
           <Route exact path="/" render={HomeComponent} />
           <Route exact path="/userProfile" render={UserProfileComponent} />
+          <Route exact path="/login" render={LogInComponent} />
         </Switch>
       </Router>
     );
