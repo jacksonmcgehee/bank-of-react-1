@@ -41,7 +41,8 @@ class App extends Component {
   }
 
   addNewDebit = (newDebit) => {
-    const debits = {...this.state.debits}
+    const debits = [...this.state.debits]
+    console.log(debits)
     debits.push(newDebit)
     this.setState({debits})
   }
@@ -59,6 +60,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    console.log('Component will mount')
     this.getDebitData()
     this.getCreditData()
   }
