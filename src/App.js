@@ -10,7 +10,6 @@ import CreditsPage from './components/CreditsPage'
 
 class App extends Component {
   state = {
-    accountBalance: 14568.27,
     currentUser: {
       userName: 'bob_loblaw',
       memberSince: '08/23/99'
@@ -41,17 +40,35 @@ class App extends Component {
     })
   }
 
+  addNewDebit = (newDebit) => {
+    const debits = {...this.state.debits}
+    debits.push(newDebit)
+    this.setState({debits})
+  }
+
+  calculateAccountBalance = () => {
+    const totalCredits = this.state.credits.reduce((totalCredits, credit) => {
+      return totalCredits + credit.amount
+    }, 0)
+
+    const totalDebits = this.state.debits.reduce((totalDebits, debit) => {
+      return totalDebits + debit.amount
+    }, 0)
+
+    return totalCredits - totalDebits
+  }
+
   componentWillMount() {
     this.getDebitData()
     this.getCreditData()
   }
 
   render() {
-    console.log(Date.now())
+    const accountBalance = this.calculateAccountBalance()
 
     const HomeComponent = () => (
       <Home
-        accountBalance={this.state.accountBalance} />
+        accountBalance={accountBalance} {...this.props}/>
     )
 
     const UserProfileComponent = () => (
@@ -69,12 +86,15 @@ class App extends Component {
 
     const DebitsPageComponent = () => (
       <DebitsPage
-        debits={this.state.debits} />
+        debits={this.state.debits}
+        addNewDebit={this.addNewDebit} 
+        accountBalance={accountBalance} {...this.props} />
     )
 
     const CreditsPageComponent = () => (
       <CreditsPage
-        credits={this.state.credits} />
+        credits={this.state.credits} 
+        accountBalance={accountBalance} {...this.props} />
     )
 
     return (
@@ -91,4 +111,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

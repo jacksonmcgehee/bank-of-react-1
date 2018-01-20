@@ -12,6 +12,7 @@ class CreditsPage extends Component {
             <div>
                 <h1>Hello from the credits page.</h1>
                 <div>
+                    <h2>Account Balance: {this.props.accountBalance}</h2>
                     <h2>Credits:</h2>
                     <div>
                         List of individual credits.
