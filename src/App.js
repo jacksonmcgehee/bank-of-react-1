@@ -47,6 +47,12 @@ class App extends Component {
     this.setState({debits})
   }
 
+  addNewCredit = (newCredit) => {
+    const credits = [...this.state.credits]
+    credits.push(newCredit)
+    this.setState({credits})
+  }
+
   calculateAccountBalance = () => {
     const totalCredits = this.state.credits.reduce((totalCredits, credit) => {
       return totalCredits + credit.amount
@@ -95,7 +101,8 @@ class App extends Component {
 
     const CreditsPageComponent = () => (
       <CreditsPage
-        credits={this.state.credits} 
+        credits={this.state.credits}
+        addNewCredit={this.addNewCredit}
         accountBalance={accountBalance} {...this.props} />
     )
 
